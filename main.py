@@ -18,7 +18,7 @@ def apply_bitstream_noise(input_file, output_file):
     subprocess.run(f"ffmpeg -i \"{input_file}\" -c:v copy -bsf:v noise=amount=key -c:a copy \"{output_file}\" -y", shell=True)
 
 def convert_to_mp4(input_file, output_file):
-    subprocess.run(f"ffmpeg -i \"{input_file}\" -c:v libx264 -c:a aac \"{output_file}\" -y", shell=True)
+    subprocess.run(f"ffmpeg -i \"{input_file}\" -c:v libx264 -c:a aac \"{output_file    }\" -y", shell=True)
 
 def corrupt():
     filepath = file_label.cget("text").replace("file: ", "")
