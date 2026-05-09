@@ -12,13 +12,13 @@ def get_file_path():
     return file
 
 def convert_video_to_xvid(filepath, output_file):
-    subprocess.run(f"ffmpeg -i {shlex.quote(filepath)} -c:v libxvid -g 250 -bf 0 -c:a copy {shlex.quote(output_file)} -y", shell=True)
+    subprocess.run(f"ffmpeg -i \"{filepath}\" -c:v libxvid -g 250 -bf 0 -c:a copy \"{output_file}\" -y", shell=True)
 
 def apply_bitstream_noise(input_file, output_file):
-    subprocess.run(f"ffmpeg -i {shlex.quote(input_file)} -c:v copy -bsf:v noise=amount=key -c:a copy {shlex.quote(output_file)} -y", shell=True)
+    subprocess.run(f"ffmpeg -i \"{input_file}\" -c:v copy -bsf:v noise=amount=key -c:a copy \"{output_file}\" -y", shell=True)
 
 def convert_to_mp4(input_file, output_file):
-    subprocess.run(f"ffmpeg -i {shlex.quote(input_file)} -c:v libx264 -c:a aac {shlex.quote(output_file)} -y", shell=True)
+    subprocess.run(f"ffmpeg -i \"{input_file}\" -c:v libx264 -c:a aac \"{output_file}\" -y", shell=True)
 
 def corrupt():
     filepath = file_label.cget("text").replace("file: ", "")
@@ -41,6 +41,7 @@ def corrupt():
     if os.path.exists(xvid_file):
         apply_bitstream_noise(xvid_file, noise_file)
         finished.config(text="finished bitstream noise")
+        os.remove(xvid_file)
     else:
         finished.config(text="Failed to create xvid file")
         return
@@ -48,6 +49,7 @@ def corrupt():
     if os.path.exists(noise_file):
         convert_to_mp4(noise_file, out)
         finished.config(text=f"saved as {os.path.basename(out)}")
+        os.remove(noise_file)
     else:
         finished.config(text="Failed to create bit file")
 
